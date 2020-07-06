@@ -28,6 +28,8 @@ xs -n 20 overgrowth 4 123.0 0.3 232 226
 20 is the number of iterations (e.g. the number of times you would press the play button).
 The parameter after overgrowth are the parameter defined above in the same order.
 
+You can also use marquee select with the box select and voxel shader option to apply the shader only to a part of your scene.
+
 ## Issues
 
 I tested the shader with objects of max size 256 x 256 x 256. It can get really slow on this size. Also the `Max Volume` parameter should be kept under 8. I encountered some crashes when using 8 or higher. 
