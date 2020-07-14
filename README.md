@@ -7,11 +7,15 @@ Install the shader by copying the file from the `shader` directory into the `sha
 
 ## Usage
 
+After installing the shaders (see Installation above) you should see them in the shader menu.
+
+Use them according to the description below and try mixing them up for cool results.
+
 ### Overgrowth Shader
 
-![...](readme_img/im6.png?raw=true "Title")
+This shader lets you create a mossy or leafy plant or foam (you choose the color set) on your voxel art.
 
-After installing the shader (see Installation above) you should see the overgrowth shader in the shader menu.
+![...](readme_img/im6.png?raw=true "Title")
 
 There are 5 parameters right now:
 
@@ -38,6 +42,19 @@ You can also use marquee select with the box select and voxel shader option to a
 
 I tested the shader with objects of max size 256 x 256 x 256. It can get really slow on this size. Also the `Max Volume` parameter should be kept under 8. I encountered some crashes when using 8 or higher. 
 
+### Corrosion Shader
+
+Caution! This shader will eat your voxels :). Once you place a drop of color (you choose the color set) and run the shader it will dissolve your voxels like acid. 
+It's the inverse of the overgrowth shader
+
+![...](readme_img/im7.png?raw=true "Title")
+
+### Patina Shader
+
+This shader will grow a patina on your voxels. It won't create new voxels, just change the color.
+It uses the same pattern as the corrosion shader and the overgrowth shader.
+
+![...](readme_img/im8.png?raw=true "Title")
 
 ### Plates Shader
 
