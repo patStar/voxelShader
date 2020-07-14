@@ -7,15 +7,17 @@ Install the shader by copying the file from the `shader` directory into the `sha
 
 ## Usage
 
+### Overgrowth Shader
+
 After installing the shader (see Installation above) you should see the overgrowth shader in the shader menu.
 
 There are 5 parameters right now:
 
-| Parameter | Description |
-| ------ | ------ |
-| Max Volume | The growth width or thickness of the plants. 3 to 5 looks quite natural. 1 is interesting and higher values might cause MagicaVoxel to crash due to high computational effort. |
-| Random Seed | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
-| Growth Density | Between 0 and 1. 1 will look like a very thick carpet of plants while lower values will look more natural. |
+| Parameter | Range | Description |
+| ------ | ------ | ------ |
+| Max Volume | 0,1,2 |The growth width or thickness of the plants. 3 to 5 looks quite natural. 1 is interesting and higher values might cause MagicaVoxel to crash due to high computational effort. |
+| Random Seed | 0 to 1.000.000 |Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
+| Growth Density |0.000 to 1.000| 1 will look like a very thick carpet of plants while lower values will look more natural. |
 | Color A | You may color the different layers of your plant in different colors. Color A will be the index of the color of the lowest layer. Just above the dirt.|
 | Color B | You may color the different layers of your plant in different colors. Color B will be the index of the color of the highest tip of the plants.|
 
@@ -30,6 +32,37 @@ The parameter after overgrowth are the parameter defined above in the same order
 
 You can also use marquee select with the box select and voxel shader option to apply the shader only to a part of your scene.
 
-## Issues
+#### Issues
 
 I tested the shader with objects of max size 256 x 256 x 256. It can get really slow on this size. Also the `Max Volume` parameter should be kept under 8. I encountered some crashes when using 8 or higher. 
+
+
+### Plates Shader
+
+This one is very versatile!
+
+There are the current maximum of 8 parametes for you to adjust this shader.
+
+| Parameter | Description |
+| ------ | ------ |
+| Mode | One of the following. <ul><li>0 - Use shader in 1-layer-a-time mode on vertical surfaces only</li><li>1 - Use the shader in 1-layer-a-time on vertical and horizontal surfaces</li><li>2 - Use the shader to fill the volume of whatever is selected if using BoxMode-Attatch with VoxelShader option</li><li>3 - Attach plates to walls and floors but distort the pattern</li><li>4 - Attach plates to floors only (no walls)</li></ul>   |
+| Random Seed | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
+| Density | Between 0 and 1 | How compact the plates will be. This corresponds to the total number of plates as well. |
+| Color A | The index of the first color you want to use for your plates. Colors are distributed randomly between plates.|
+| Color B | If different from Color A, it defines the last index of the color range given by all colors between A and B (inclusive). Colors are distributed randomly between plates.|
+| xWidth | The thickness of the plates in x direction. |
+| yWidth | The thickness of the plates in y direction. |
+| zWidth | The thickness of the plates in z direction. |
+
+The last 3 properties, together with the density define the look and outcome of the shader massively. 
+Try playing around with them.
+Use very high xWidth and yWidth with a zWidth of 1 or change density during iterations to create interesting patterns.
+
+![...](readme_img/im1.png?raw=true "Title")
+![...](readme_img/im2.png?raw=true "Title")
+![...](readme_img/im3.png?raw=true "Title")
+![...](readme_img/im4.png?raw=true "Title")
+![...](readme_img/im5.png?raw=true "Title")
+
+
+
