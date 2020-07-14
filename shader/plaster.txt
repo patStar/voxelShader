@@ -1,0 +1,66 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Max Volume'  value = '2'  range = '0 100'  step = '1'  decimal = '0' }
+// arg : { id = '1'  name = 'Random Seed'  value = '123'  range = '0 10000'  step = '1'  decimal = '2' }
+// arg : { id = '2'  name = 'Density'  value = '0.3'  range = '0 1'  step = '0.1'  decimal = '2' }
+// arg : { id = '3'  name = 'Color A'  value = '250'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '4'  name = 'Color B'  value = '254'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '5'  name = 'xmin'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '6'  name = 'ymin'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
+// xs_end
+
+int thickness = iArgs[0];
+float seed = iArgs[1];
+float density = iArgs[2];
+int startColor = iArgs[3];
+int endColor = iArgs[4];
+int xMin = iArgs[5];
+int yMin = iArgs[6];
+
+float random(vec3 v){
+	float n = (v.x+1)*(v.y+1)*(v.z+1) + seed;
+
+	return abs(fract(sin(sin(1/tan(mod(n,71)) + seed * 1235.342)+cos(1/(sin(mod(n,16))+2) + seed * 1267.342))));
+}
+
+bool hasOneNeighbor(vec3 v){
+	int count = 0;
+	if(voxel(v+vec3(1,0,0)) > 0) count++;
+	if(voxel(v+vec3(0,1,0)) > 0) count++;
+	if(voxel(v+vec3(-1,0,0)) > 0) count++;
+	if(voxel(v+vec3(0,-1,0)) > 0) count++;
+	return count == 1;
+}
+
+bool hasNeighbors(vec3 v){
+	int count = 0;
+	if(voxel(v+vec3(1,0,0)) > 0) count++;
+	if(voxel(v+vec3(0,1,0)) > 0) count++;
+	if(voxel(v+vec3(-1,0,0)) > 0) count++;
+	if(voxel(v+vec3(0,-1,0)) > 0) count++;
+	return count > 0;
+}
+
+bool hasZNeighbors(vec3 v){
+	int count = 0;	
+	if(voxel(v+vec3(0,0,-1)) > 0 && voxel(v+vec3(0,0,1)) == 0) count++;
+	return count > 0;
+}
+
+
+float map(vec3 v) {
+
+int color =  voxel(v);
+
+if(hasZNeighbors(v)){
+		int yLen = yMin + floor(random(vec3(floor(v.x/xMin),floor((v.y)/7),v.z))*7);
+		int xShift = floor(random(vec3(floor(v.x/xMin),floor(v.y/yLen),v.z)) * 2);
+		if(random(vec3(floor((v.x+xShift)/xMin),floor(v.y/(yLen)),0)) < density){		
+			color = startColor + mod(floor(v.x/xMin)*floor(v.y/7)+floor(random(vec3(floor(v.x/xMin),floor((v.y)/7),v.z))*5),abs(endColor-startColor-1));
+		}	
+}
+		return color;
+}

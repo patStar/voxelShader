@@ -83,5 +83,25 @@ Use very high xWidth and yWidth with a zWidth of 1 or change density during iter
 ![...](readme_img/im4.png?raw=true "Title")
 ![...](readme_img/im5.png?raw=true "Title")
 
+### Plaster Shader
+
+A bit like the Plates shader but it draws multiple layers of plates and only on Floors.
+
+![...](readme_img/im9.png?raw=true "Title")
+
+### Coating Shader
+
+Very simple shader. It adds one vertex to the outside of every existing vertex on every wall in the selection.
+The color of the coat is always the currently selected color. It simply adds layers to existing vertices.
+
+![...](readme_img/im11.png?raw=true "Title")
 
 
+
+
+
+### Riffle Shader (Early in development)
+
+This one cuts out vertical (mode 0) or horizontal (mode 1) lines from selected walls.
+
+![...](readme_img/im10.png?raw=true "Title")
