@@ -9,6 +9,8 @@ Install the shader by copying the file from the `shader` directory into the `sha
 
 ### Overgrowth Shader
 
+![...](readme_img/im6.png?raw=true "Title")
+
 After installing the shader (see Installation above) you should see the overgrowth shader in the shader menu.
 
 There are 5 parameters right now:
