@@ -5,7 +5,7 @@
 // author : '@rubikow'
 // arg : { id = '0'  name = 'Mode'  value = '3'  range = '0 4'  step = '1'  decimal = '0' }
 // arg : { id = '1'  name = 'Random Seed'  value = '123'  range = '0 1000000'  step = '1'  decimal = '0' }
-// arg : { id = '2'  name = 'Density'  value = '0.3'  range = '0 10'  step = '0.1'  decimal = '3' }
+// arg : { id = '2'  name = 'Density'  value = '0.3'  range = '0 10'  step = '0.1'  decimal = '4' }
 // arg : { id = '3'  name = 'Color A'  value = '250'  range = '0 255'  step = '1'  decimal = '0' }
 // arg : { id = '4'  name = 'Color B'  value = '254'  range = '0 255'  step = '1'  decimal = '0' }
 // arg : { id = '5'  name = 'xWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
@@ -13,40 +13,41 @@
 // arg : { id = '7'  name = 'zWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
 // xs_end
 
-int mode = iArgs[0];
-float seed = iArgs[1];
-float density = iArgs[2];
-int startColor = iArgs[3];
-int endColor = iArgs[4];
-int xMin = iArgs[5];
-int yMin = iArgs[6];
-int zMin = iArgs[7];
+
+int mode = int(iArgs[0]);
+float seed = float(iArgs[1]);
+float density = float(iArgs[2]);
+float startColor = float(iArgs[3]);
+float endColor = float(iArgs[4]);
+float xMin = float(iArgs[5]);
+float yMin = float(iArgs[6]);
+float zMin = float(iArgs[7]);
 
 float random(vec3 v){
-	float n = (v.x*2+1)*(v.y*3+1)*(v.z*4+1) + seed;
+	float n = (v.x*2.0+1.)*(v.y*3.0+1.)*(v.z*4.0+1.) + seed;
 
-	return abs( sin(sin(1/tan(mod(n,71)) + seed * 1235.342)+cos(1/(sin(mod(n,16))+2) + seed * 1267.342)) );
+	return abs( sin(sin(1./tan(mod(n,71.)) + seed * 1235.342)+cos(1./(sin(mod(n,16.))+2.) + seed * 1267.342)) );
 }
 
 bool hasXYNeighbors(vec3 v){
 	int count = 0;	
 
 	if(mode == 1 || mode == 3 || mode == 4 || mode == 5){
-		if(voxel(v+vec3(0,0,-1)) > 0 && voxel(v) == 0) count++;
+		if(voxel(v+vec3(0,0,-1)) > 0. && voxel(v) == 0.) count++;
 	}
 	
 	if(mode != 4){
-		if(voxel(v+vec3(0,-1,0)) > 0 && voxel(v) == 0) count++;
-		if(voxel(v+vec3(0,1,0)) > 0 && voxel(v) == 0) count++;
-		if(voxel(v+vec3(-1,0,0)) > 0 && voxel(v) == 0) count++;
-		if(voxel(v+vec3(1,0,0)) > 0 && voxel(v) == 0) count++;
+		if(voxel(v+vec3(0,-1,0)) > 0. && voxel(v) == 0.) count++;
+		if(voxel(v+vec3(0,1,0)) > 0. && voxel(v) == 0.) count++;
+		if(voxel(v+vec3(-1,0,0)) > 0. && voxel(v) == 0.) count++;
+		if(voxel(v+vec3(1,0,0)) > 0. && voxel(v) == 0.) count++;
 		
 		if(mode == 5){
-			if(voxel(v+vec3(0,0,-2)) > 0 && voxel(v) == 0) count++;	
-			if(voxel(v+vec3(0,-2,0)) > 0 && voxel(v) == 0) count++;
-			if(voxel(v+vec3(0,2,0)) > 0 && voxel(v) == 0) count++;
-			if(voxel(v+vec3(-2,0,0)) > 0 && voxel(v) == 0) count++;
-			if(voxel(v+vec3(2,0,0)) > 0 && voxel(v) == 0) count++;
+			if(voxel(v+vec3(0,0,-2)) > 0. && voxel(v) == 0.) count++;	
+			if(voxel(v+vec3(0,-2,0)) > 0. && voxel(v) == 0.) count++;
+			if(voxel(v+vec3(0,2,0)) > 0. && voxel(v) == 0.) count++;
+			if(voxel(v+vec3(-2,0,0)) > 0. && voxel(v) == 0.) count++;
+			if(voxel(v+vec3(2,0,0)) > 0. && voxel(v) == 0.) count++;
 		}
 	}
 
@@ -56,21 +57,21 @@ bool hasXYNeighbors(vec3 v){
 
 float map(vec3 v) {
 
-	int color =  voxel(v);
+	float color =  voxel(v);
 
 	if(hasXYNeighbors(v) || mode == 2){	
-		int yShift = 0;
-		int xShift = 0;
-		int zShift = 0;
+		float yShift = 0.;
+		float xShift = 0.;
+		float zShift = 0.;
 		if(mode > 2){
-			int modulo = floor((xMin+yMin+zMin)/3.0);
+			float modulo = floor(float(xMin+yMin+zMin)/3.0);
 			yShift = mod(seed * abs(    sin(floor(v.x/xMin) + floor(v.y/yMin) + floor(v.z/zMin))), modulo);
 			xShift = mod(seed * abs(    cos(floor(v.x/xMin) + floor(v.y/yMin) + floor(v.z/zMin))), modulo);
 			zShift = mod(seed * abs(0.5+cos(floor(v.x/xMin) + floor(v.y/yMin) + floor(v.z/zMin))), modulo);
 		}
 		if( (mode > 2 && random( vec3( floor( (v.x+xShift) / xMin ), floor( (v.y+yShift) / yMin ), floor( (v.z+zShift) / zMin ) ) ) <= density) 
 			|| (mode <= 2 && random( vec3( floor( (v.x) / xMin ), floor( (v.y) / yMin ), floor( (v.z) / zMin ) ) ) <= density)){		
-			color = startColor + abs(sin( floor( (v.x+xShift) / xMin )+ floor( (v.y+yShift) / yMin )+ floor( (v.z+zShift) / zMin )) * (endColor-startColor-1));
+			color = startColor + abs(sin( floor( (v.x+xShift) / xMin )+ floor( (v.y+yShift) / yMin )+ floor( (v.z+zShift) / zMin )) * (endColor-startColor-1.));
 		}
 	}
 	return color;
