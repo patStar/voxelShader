@@ -10,11 +10,11 @@
 // arg : { id = '4'  name = 'Color B'  value = '226'  range = '0 255'  step = '1'  decimal = '0' }
 // xs_end
 
-int thickness = iArgs[0];
-float seed = iArgs[1];
-float density = iArgs[2];
-int startColor = iArgs[3];
-int endColor = iArgs[4];
+float thickness = float(iArgs[0]);
+float seed = float(iArgs[1]);
+float density = float(iArgs[2]);
+float startColor = float(iArgs[3]);
+float endColor = float(iArgs[4]);
 
 bool isGrowColor(vec3 v){
 	return voxel(v) >= min(startColor, endColor) && voxel(v) <= max(startColor, endColor);
@@ -23,18 +23,18 @@ bool isGrowColor(vec3 v){
 float random(vec3 v, float seed){
 	float n = v.x*v.y*v.z + seed;
 
-	return abs(fract(sin(1/tan(n) + seed * 1235.342)));
+	return abs(fract(sin(1./tan(n) + seed * 1235.342)));
 }
 
 float minDistanceToWall(vec3 v, float distance){
 	
-	float minDistance = distance+1;
+	float minDistance = distance+1.;
 	
-	for(int x=-distance; x<=distance;x++){
-		for(int y=-distance; y<=distance;y++){
-			for(int z=-distance; z<=distance;z++){								
-				if(voxel(vec3(v.x+x,v.y+y,v.z+z)) != 0 && !isGrowColor(vec3(v.x+x,v.y+y,v.z+z))){
-					float d = sqrt(pow(x,2) + pow(y,2) + pow(z,2));
+	for(float x=-distance; x<=distance;x+=1.){
+		for(float y=-distance; y<=distance;y+=1.){
+			for(float z=-distance; z<=distance;z+=1.){								
+				if(voxel(vec3(v.x+x,v.y+y,v.z+z)) != 0. && !isGrowColor(vec3(v.x+x,v.y+y,v.z+z))){
+					float d = sqrt(pow(x,2.) + pow(y,2.) + pow(z,2.));
 					if(minDistance > d){
 						minDistance = d;
 					}					
@@ -46,11 +46,11 @@ float minDistanceToWall(vec3 v, float distance){
 	return minDistance;
 }
 
-int getCrowColor(vec3 v){
+float getCrowColor(vec3 v){
 	float distance = minDistanceToWall(v, thickness);
-	int max = max(startColor, endColor);
-	int min = min(startColor, endColor);
-	float mix = (max-min)*(distance/sqrt(pow(thickness,2)*3));
+	float max = max(startColor, endColor);
+	float min = min(startColor, endColor);
+	float mix = (max-min)*(distance/sqrt(pow(thickness,2.)*3.));
 	if(min == startColor){
 		return min+mix;
 	}else{
@@ -60,10 +60,10 @@ int getCrowColor(vec3 v){
 
 bool hasWallNextToIt(vec3 v, float distance){
 	
-	for(int x=-distance; x<=distance;x++){
-		for(int y=-distance; y<=distance;y++){
-			for(int z=-distance; z<=distance;z++){								
-				if(voxel(vec3(v.x+x,v.y+y,v.z+z)) != 0 && !isGrowColor(vec3(v.x+x,v.y+y,v.z+z)) ){
+	for(float x=-distance; x<=distance;x+=1.){
+		for(float y=-distance; y<=distance;y+=1.){
+			for(float z=-distance; z<=distance;z+=1.){								
+				if(voxel(vec3(v.x+x,v.y+y,v.z+z)) != 0. && !isGrowColor(vec3(v.x+x,v.y+y,v.z+z)) ){
 					return true;
 				}				
 			}			
@@ -76,28 +76,28 @@ bool hasWallNextToIt(vec3 v, float distance){
 int getFlatNeighbors(vec3 v){
 	int neighbors = 0;
 
-	if(isGrowColor(vec3(v.x+1,v.y+1,v.z))){							
+	if(isGrowColor(vec3(v.x+1.,v.y+1.,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x+1,v.y-1,v.z))){							
+	if(isGrowColor(vec3(v.x+1.,v.y-1.,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x-1,v.y+1,v.z))){							
+	if(isGrowColor(vec3(v.x-1.,v.y+1.,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x-1,v.y-1,v.z))){							
+	if(isGrowColor(vec3(v.x-1.,v.y-1.,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x+1,v.y,v.z))){							
+	if(isGrowColor(vec3(v.x+1.,v.y,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x-1,v.y,v.z))){							
+	if(isGrowColor(vec3(v.x-1.,v.y,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x,v.y-1,v.z))){							
+	if(isGrowColor(vec3(v.x,v.y-1.,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x,v.y+1,v.z))){							
+	if(isGrowColor(vec3(v.x,v.y+1.,v.z))){							
 		neighbors++;			
 	}
 
@@ -107,22 +107,22 @@ int getFlatNeighbors(vec3 v){
 int getNeighbors(vec3 v){
 	int neighbors = 0;
 
-	if(isGrowColor(vec3(v.x,v.y,v.z+1))){							
+	if(isGrowColor(vec3(v.x,v.y,v.z+1.))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x,v.y,v.z-1))){							
+	if(isGrowColor(vec3(v.x,v.y,v.z-1.))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x+1,v.y,v.z))){							
+	if(isGrowColor(vec3(v.x+1.,v.y,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x-1,v.y,v.z))){							
+	if(isGrowColor(vec3(v.x-1.,v.y,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x,v.y-1,v.z))){							
+	if(isGrowColor(vec3(v.x,v.y-1.,v.z))){							
 		neighbors++;			
 	}
-	if(isGrowColor(vec3(v.x,v.y+1,v.z))){							
+	if(isGrowColor(vec3(v.x,v.y+1.,v.z))){							
 		neighbors++;			
 	}
 
@@ -131,19 +131,19 @@ int getNeighbors(vec3 v){
 
 bool growsDown(vec3 v){	
 
-	if(isGrowColor(vec3(v.x,v.y,v.z+1))){							
+	if(isGrowColor(vec3(v.x,v.y,v.z+1.))){							
 		return true;
 	}
-	if(isGrowColor(vec3(v.x+1,v.y,v.z))){							
+	if(isGrowColor(vec3(v.x+1.,v.y,v.z))){							
 		return true;
 	}
-	if(isGrowColor(vec3(v.x-1,v.y,v.z))){							
+	if(isGrowColor(vec3(v.x-1.,v.y,v.z))){							
 		return true;
 	}
-	if(isGrowColor(vec3(v.x,v.y-1,v.z))){							
+	if(isGrowColor(vec3(v.x,v.y-1.,v.z))){							
 		return true;
 	}
-	if(isGrowColor(vec3(v.x,v.y+1,v.z))){							
+	if(isGrowColor(vec3(v.x,v.y+1.,v.z))){							
 		return true;
 	}
 	
@@ -152,25 +152,25 @@ bool growsDown(vec3 v){
 
 bool grows(vec3 v){
 	int n = getNeighbors(v);
-	float r = random(v, seed+n);
-	if(voxel(v) == 0){				
-		if(hasWallNextToIt(v, 1) && isGrowColor(v+vec3(0,0,-1))  && mod(v.x+v.y,13) == 0){
+	float r = random(v, seed+float(n));
+	if(voxel(v) == 0.){				
+		if(hasWallNextToIt(v, 1.) && isGrowColor(v+vec3(0,0,-1.))  && mod(v.x+v.y,13.) == 0.){
 			return true;
 		}
-		if(hasWallNextToIt(v, 1) && isGrowColor(v+vec3(0,0,1)) && mod(v.x+v.y,27) == 0){
+		if(hasWallNextToIt(v, 1.) && isGrowColor(v+vec3(0,0,1.)) && mod(v.x+v.y,27.) == 0.){
 			return true;
 		}
-		if(hasWallNextToIt(v, 1) && isGrowColor(v+vec3(0,0,-2)) && mod(v.x+v.y,13) == 0){
+		if(hasWallNextToIt(v, 1.) && isGrowColor(v+vec3(0,0,-2.)) && mod(v.x+v.y,13.) == 0.){
 			return true;
 		}		
-		if(hasWallNextToIt(v, 1) && isGrowColor(v+vec3(0,0,2)) && mod(v.x+v.y,27) == 0){
+		if(hasWallNextToIt(v, 1.) && isGrowColor(v+vec3(0,0,2.)) && mod(v.x+v.y,27.) == 0.){
 			return true;
 		}
 		
-		if(hasWallNextToIt(v, 1) && getFlatNeighbors(v) > 3){
+		if(hasWallNextToIt(v, 1.) && getFlatNeighbors(v) > 3){
 			return true;
 		}
-		else if(r < (density) - (minDistanceToWall(v,thickness)/thickness)*(density/2) && hasWallNextToIt(v, thickness) && n > 0 && (growsDown(v) || random(v, seed+5.567) < 0.3)) 
+		else if(r < (density) - (minDistanceToWall(v,thickness)/thickness)*(density/2.) && hasWallNextToIt(v, thickness) && n > 0 && (growsDown(v) || random(v, seed+5.567) < 0.3)) 
 		{
 			return true;
 		}		
@@ -182,11 +182,11 @@ bool grows(vec3 v){
 float grow(vec3 v, float seed){	
 	if( grows(v)){
 		return getCrowColor(v);		
-	}else if(isGrowColor(v) && minDistanceToWall(v, thickness) > 1){
+	}else if(isGrowColor(v) && minDistanceToWall(v, thickness) > 1.){
 		int n = getNeighbors(v);
-		float r = random(v, seed+n);
-		if(r < density + n/100 + (pow(minDistanceToWall(v, thickness),2)/pow(thickness,2)) * 0.5){
-			return 0;
+		float r = random(v, seed+float(n));
+		if(r < density + float(n)/100. + (pow(minDistanceToWall(v, thickness),2.)/pow(thickness,2.)) * 0.5){
+			return 0.;
 		}
 	}
 	return voxel(v);

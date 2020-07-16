@@ -7,10 +7,10 @@
 
 bool hasOneNeighbor(vec3 v){
 	int count = 0;
-	if(voxel(v+vec3(1,0,0)) > 0) count++;
-	if(voxel(v+vec3(0,1,0)) > 0) count++;
-	if(voxel(v+vec3(-1,0,0)) > 0) count++;
-	if(voxel(v+vec3(0,-1,0)) > 0) count++;
+	if(voxel(v+vec3(1,0,0)) > 0.) count++;
+	if(voxel(v+vec3(0,1,0)) > 0.) count++;
+	if(voxel(v+vec3(-1,0,0)) > 0.) count++;
+	if(voxel(v+vec3(0,-1,0)) > 0.) count++;
 	return count == 1;
 }
 
