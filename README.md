@@ -149,7 +149,7 @@ Layers can be colored differently using the Additional Colors parameter.
 | ------ | ------ |
 | Top Radius Modifier | Between 0 and 1. Defines how much the tower shrinks towards the top. A value of 1 will produce a cone. A value 0f 0.5 will create a tower with half the radius on top. |
 | Slice Height | Defines how thick one slice of the tower should be. A value of higher than 1 produces kind of a birthday cake layer tower.  |
-| Additional Colors | (-255 to 255) | A number defining how many colors following (or preceeding) your selected color will be used to paint the layers of the tower. |
+| Additional Colors | (-255 to 255) A number defining how many colors following (or preceeding) your selected color will be used to paint the layers of the tower. |
 
 ![...](readme_img/im14.png?raw=true "Title")
 ![...](readme_img/im15.png?raw=true "Title")
