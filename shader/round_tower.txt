@@ -5,20 +5,34 @@
 // author : '@rubikow'
 // arg : { id = '0'  name = 'Top Radius Modifier'  value = '0.75'  range = '0 1'  step = '0.01'  decimal = '3' }
 // arg : { id = '1'  name = 'Slice Height'  value = '1'  range = '1 256'  step = '1'  decimal = '0' }
+// arg : { id = '3'  name = 'Additional Colors'  value = '0'  range = '-255 255'  step = '1'  decimal = '0' }
 // xs_end
 
+float radiusModifier = float(iArgs[0]);
+float sliceHeight = float(iArgs[1]);
+float colorRange = float(iArgs[3]);
 
 float map(vec3 v) {	
 	vec3 center = i_volume_size * 0.5;
 		
-	float radiusFraction = (1.0-iArgs[0])/i_volume_size.z;
+	float radiusFraction = (1.0-radiusModifier)/i_volume_size.z;
 	
-	float radiusFractionOnHeight = 1. - (radiusFraction * floor(v.z/iArgs[1])*iArgs[1]);
+	float radiusFractionOnHeight = 1. - (radiusFraction * floor(v.z/sliceHeight)*sliceHeight);
 	
-	bool inEllipse = pow(v.x-center.x,2)/pow(center.x*radiusFractionOnHeight,2)+pow(v.y-center.y,2)/pow(center.y*radiusFractionOnHeight,2) <= 1;
+	bool inEllipse = pow(v.x-center.x,2.)/pow(center.x*radiusFractionOnHeight,2.)+pow(v.y-center.y,2.)/pow(center.y*radiusFractionOnHeight,2.) <= 1.;
 	
     if(inEllipse){		
-		return i_color_index;
+		if(colorRange == 0.){
+			return i_color_index;
+		}else{
+			float layer = mod(floor(v.z/sliceHeight),colorRange + (colorRange > 0? 1 : -1.));
+			
+			if(layer == 0.){
+				return i_color_index;
+			}else{
+				return i_color_index + (colorRange * layer/colorRange);
+			}
+		}
 	}
 	
 	return voxel(v);

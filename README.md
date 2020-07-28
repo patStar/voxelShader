@@ -138,3 +138,20 @@ It creates an impression of windows. Use an inner box of emmissive color, coated
 ![...](readme_img/im10.png?raw=true "Title")
 ![...](readme_img/im12.png?raw=true "Title")
 ![...](readme_img/im13.png?raw=true "Title")
+
+### Round Tower
+
+Creates a cylinder which has a decreased radius at the top (if the modifier is greater than 0).
+Can be used to build cakes or layered towers.
+Layers can be colored differently using the Additional Colors parameter.
+
+| Parameter | Description |
+| ------ | ------ |
+| Top Radius Modifier | Between 0 and 1. Defines how much the tower shrinks towards the top. A value of 1 will produce a cone. A value 0f 0.5 will create a tower with half the radius on top. |
+| Slice Height | Defines how thick one slice of the tower should be. A value of higher than 1 produces kind of a birthday cake layer tower.  |
+| Additional Colors | (-255 to 255) | A number defining how many colors following (or preceeding) your selected color will be used to paint the layers of the tower. |
+
+![...](readme_img/im14.png?raw=true "Title")
+![...](readme_img/im15.png?raw=true "Title")
+![...](readme_img/im16.png?raw=true "Title")
+
