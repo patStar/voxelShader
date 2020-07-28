@@ -5,18 +5,16 @@
 // author : '@rubikow'
 // arg : { id = '0'  name = 'Random Seed'  value = '123'  range = '0 10000'  step = '1'  decimal = '2' }
 // arg : { id = '1'  name = 'Density'  value = '0.3'  range = '0 1'  step = '0.1'  decimal = '2' }
-// arg : { id = '2'  name = 'Color A'  value = '250'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '3'  name = 'Color B'  value = '254'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '4'  name = 'xmin'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '5'  name = 'ymin'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '2'  name = 'Addition Colors'  value = '0'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '3'  name = 'xmin'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '4'  name = 'ymin'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
 // xs_end
 
 float seed = float(iArgs[0]);
 float density = float(iArgs[1]);
-float startColor = float(iArgs[2]);
-float endColor = float(iArgs[3]);
-float xMin = float(iArgs[4]);
-float yMin = float(iArgs[5]);
+float colorRange = float(iArgs[2]);
+float xMin = float(iArgs[3]);
+float yMin = float(iArgs[4]);
 
 float random(vec3 v){
 	float n = (v.x+1.)*(v.y+1.)*(v.z+1.) + seed;
@@ -57,7 +55,11 @@ float map(vec3 v) {
 			float yLen = yMin + floor(random(vec3(floor(v.x/xMin),floor((v.y)/7.),v.z))*7.);
 			float xShift = floor(random(vec3(floor(v.x/xMin),floor(v.y/yLen),v.z)) * 2.);
 			if(random(vec3(floor((v.x+xShift)/xMin),floor(v.y/(yLen)),0.)) < density){		
-				color = startColor + mod(floor(v.x/xMin)*floor(v.y/7.)+floor(random(vec3(floor(v.x/xMin),floor((v.y)/7.),v.z))*5.),abs(endColor-startColor-1.));
+				if(colorRange > 0){
+					color = i_color_index + mod(floor(v.x/xMin)*floor(v.y/7.)+floor(random(vec3(floor(v.x/xMin),floor((v.y)/7.),v.z))*5.),colorRange);
+				}else{
+					color = i_color_index;
+				}
 			}	
 	}
 	return color;

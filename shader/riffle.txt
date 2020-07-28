@@ -6,19 +6,15 @@
 // arg : { id = '0'  name = 'Max Volume'  value = '3'  range = '0 100'  step = '1'  decimal = '0' }
 // arg : { id = '1'  name = 'Random Seed'  value = '123'  range = '0 10000'  step = '1'  decimal = '2' }
 // arg : { id = '2'  name = 'Allow Roofs'  value = '0'  range = '0 1'  step = '1'  decimal = '0' }
-// arg : { id = '3'  name = 'Color A'  value = '254'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '4'  name = 'Color B'  value = '226'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '5'  name = 'Density'  value = '0.3'  range = '0 1'  step = '0.01'  decimal = '3' }
-// arg : { id = '6'  name = 'Mode'  value = '0'  range = '0 1'  step = '1'  decimal = '0' }
+// arg : { id = '3'  name = 'Density'  value = '0.3'  range = '0 1'  step = '0.01'  decimal = '3' }
+// arg : { id = '4'  name = 'Mode'  value = '0'  range = '0 1'  step = '1'  decimal = '0' }
 // xs_end
 
 float thickness = float(iArgs[0]);
 float seed = float(iArgs[1]);
 bool allowRoof = float(iArgs[2]) > 0.;
-float base_color = float(iArgs[3]);
-float endColor = float(iArgs[4]);
-float density = float(iArgs[5]);
-int mode = int(iArgs[6]);
+float density = float(iArgs[3]);
+int mode = int(iArgs[4]);
 
 float random(vec3 v){
 	float n = (floor(v.x/thickness)+1.)*(floor(v.y/thickness)+1.) + seed;

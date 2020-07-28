@@ -6,18 +6,16 @@
 // arg : { id = '0'  name = 'Max Volume'  value = '4'  range = '0 100'  step = '1'  decimal = '0' }
 // arg : { id = '1'  name = 'Random Seed'  value = '123'  range = '0 10000'  step = '1'  decimal = '2' }
 // arg : { id = '2'  name = 'Growth Density'  value = '0.3'  range = '0 1'  step = '0.01'  decimal = '2' }
-// arg : { id = '3'  name = 'Color A'  value = '232'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '4'  name = 'Color B'  value = '226'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '3'  name = 'Addition Colors'  value = '0'  range = '-255 255'  step = '1'  decimal = '0' }
 // xs_end
 
 float thickness = float(iArgs[0]);
 float seed = float(iArgs[1]);
 float density = float(iArgs[2]);
-float startColor = float(iArgs[3]);
-float endColor = float(iArgs[4]);
+float colorRange = float(iArgs[3]);
 
 bool isGrowColor(vec3 v){
-	return voxel(v) >= min(startColor, endColor) && voxel(v) <= max(startColor, endColor);
+	return voxel(v) >= min(i_color_index, i_color_index + colorRange) && voxel(v) <= max(i_color_index, i_color_index + colorRange);
 }
 
 float random(vec3 v, float seed){
@@ -47,15 +45,8 @@ float minDistanceToWall(vec3 v, float distance){
 }
 
 float getCrowColor(vec3 v){
-	float distance = minDistanceToWall(v, thickness);
-	float max = max(startColor, endColor);
-	float min = min(startColor, endColor);
-	float mix = (max-min)*(distance/sqrt(pow(thickness,2.)*3.));
-	if(min == startColor){
-		return min+mix;
-	}else{
-		return max-mix;
-	}
+	float distance = minDistanceToWall(v, thickness);	
+	return i_color_index + colorRange * (distance/sqrt(pow(thickness,2.)*3.));
 }
 
 bool hasWallNextToIt(vec3 v, float distance){

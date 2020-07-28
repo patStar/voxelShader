@@ -1,0 +1,25 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Top Radius Modifier'  value = '0.75'  range = '0 1'  step = '0.01'  decimal = '3' }
+// arg : { id = '1'  name = 'Slice Height'  value = '1'  range = '1 256'  step = '1'  decimal = '0' }
+// xs_end
+
+
+float map(vec3 v) {	
+	vec3 center = i_volume_size * 0.5;
+		
+	float radiusFraction = (1.0-iArgs[0])/i_volume_size.z;
+	
+	float radiusFractionOnHeight = 1. - (radiusFraction * floor(v.z/iArgs[1])*iArgs[1]);
+	
+	bool inEllipse = pow(v.x-center.x,2)/pow(center.x*radiusFractionOnHeight,2)+pow(v.y-center.y,2)/pow(center.y*radiusFractionOnHeight,2) <= 1;
+	
+    if(inEllipse){		
+		return i_color_index;
+	}
+	
+	return voxel(v);
+}

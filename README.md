@@ -24,16 +24,13 @@ There are 5 parameters right now:
 | Max Volume | 1 to 100 |The growth width or thickness of the plants. 3 to 5 looks quite natural. 1 is interesting and higher values might cause MagicaVoxel to crash due to high computational effort. |
 | Random Seed | 0 to 1.000.000 |Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
 | Growth Density |0.000 to 1.000| 1 will look like a very thick carpet of plants while lower values will look more natural. |
-| Color A | A color index (0 to 255) | You may paint the different layers of your plant in different colors. Color A will be the index of the color of the lowest layer (roots) of the plant. |
-| Color B | A color index (0 to 255) | You may paint the different layers of your plant in different colors. Color B will be the index of the color of the highest tip (leaves) of the plant. |
+| Additional Colors | (-255 to 255) | You may paint the different layers of your plant in different colors. The base Color will be the selected color but you can define a range of colors following or preceding the selected color here. |
 
-Color A and B define a range of colors. If you set them to the same index, only this color is used.
+Addition Colors is a number that defines a range of colors to follow or preced (negative sign) the currently selected color. A value of 0 means: use no additional color.
 
-After setting your values as you like, you need to place some voxels of any colors in range of the `Color A` and `Color B` parameter you have choosen. The color range is defined by lowest to highest index (Regarding the color A and color B parameter). All colors within this range are the seed colors of your plants. This means, these colors will 'grow' if you hit the play button on the shader. 
+After setting your values as you like, you need to place some voxels of any colors in range of the selected color +/- the Additional Color parameter you have choosen. All colors within this range are the seed colors of your plants. This means, these colors will 'grow' if you hit the play button on the shader. 
 
 Then hit the play button on the shader a few times to watch them grow step by step.
-
-The mossy plant created should have a color gradient from lowest color index outside (at the leaves) to highest color index at the inside (near the roots).
 
 You can also use this command in the console to execute the shader multiple times:
 
@@ -60,10 +57,7 @@ It's the inverse of the overgrowth shader
 | Max Volume | 1 to 100 |The higher this value, the deeper the shader will eat into the voxels with each step. Higher values might cause MagicaVoxel to crash due to high computational effort. |
 | Random Seed | 0 to 1.000.000 | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
 | Growth Density |0.000 to 1.000| This defines the probability that a voxel is removed in one step. The higher the value the more aggressive the corrosion. |
-| Color A | A color index (0 to 255) | Defines one side of a range of colors, that will be used as the acid to corrode other voxels.|
-| Color B | A color index (0 to 255) | Defines the other side of a range of colors, that will be used as the acid to corrode other voxels.|
-
-Color A and B define a range of colors. If you set them to the same index, only this color is used. The color range is always from lowest to highest value regardless which one is A or B. You may use any of the colors within this range (including A and B) to start the corrosion on voxels with that color. E.g.: if you choose a range of red colors, any of these red colors will start to corrode.
+| Additional Colors | (-255 to 255) | A number defining how many colors following (or preceeding) your selected color can be used as acid to corrode other voxels.|
 
 ### Patina Shader
 
@@ -77,10 +71,7 @@ It uses the same pattern as the corrosion shader and the overgrowth shader.
 | Max Volume | 1 to 100 | This influences the color placement pattern of the patina. Just play around with it. Higher values might cause MagicaVoxel to crash due to high computational effort. |
 | Random Seed | 0 to 1.000.000 | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
 | Growth Density |0.000 to 1.000| This defines the probability that a voxel is painted in one step. The higher the value the more aggressive the spread of the patina. |
-| Color A | A color index (0 to 255) | Defines one side of a range of colors, that will be used as the acid to corrode other voxels.|
-| Color B | A color index (0 to 255) | Defines the other side of a range of colors, that will be used as the acid to corrode other voxels.|
-
-Color A and B define a range of colors. If you set them to the same index, only this color is used. The color range is always from lowest to highest value regardless which one is A or B. You may use any of the colors within this range (including A and B) to start the spread of the patina. E.g.: if you choose a range of red colors, any of these red colors will start to spread. Also, if choosing a color range, the outer rim of the patina will be color A while the center will be more color B.
+| Additional Colors | (-255 to 255) | A number defining how many colors following (or preceeding) your selected color will be used to paint the patina.|
 
 ### Plates Shader
 
@@ -93,8 +84,7 @@ There are the current maximum of 8 parametes for you to adjust this shader.
 | Mode | One of the following. <ul><li>0 - Use shader in 1-layer-a-time mode on vertical surfaces only</li><li>1 - Use the shader in 1-layer-a-time on vertical and horizontal surfaces</li><li>2 - Use the shader to fill the volume of whatever is selected if using BoxMode-Attatch with VoxelShader option</li><li>3 - Attach plates to walls and floors but distort the pattern</li><li>4 - Attach plates to floors only (no walls)</li></ul>   |
 | Random Seed | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
 | Density | Between 0 and 1 | How compact the plates will be. This corresponds to the total number of plates as well. |
-| Color A | The index of the first color you want to use for your plates. Colors are distributed randomly between plates.|
-| Color B | If different from Color A, it defines the last index of the color range given by all colors between A and B (inclusive). Colors are distributed randomly between plates.|
+| Additional Colors | (-255 to 255) | A number defining how many colors following (or preceeding) your selected color will be used to paint the plates. Colors are distributed randomly between plates.|
 | xWidth | The thickness of the plates in x direction. |
 | yWidth | The thickness of the plates in y direction. |
 | zWidth | The thickness of the plates in z direction. |
@@ -119,8 +109,7 @@ A bit like the Plates shader but it draws multiple layers of plates and only on 
 | ------ | ------ |
 | Random Seed | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
 | Density | Between 0 and 1 | How compact the plates will be. This corresponds to the total number of plates as well. |
-| Color A | The index of the first color you want to use for your plates. Colors are distributed randomly between plates.|
-| Color B | If different from Color A, both indices defines the range of all colors between A and B (inclusive). The range always starts at the lower index. Colors are distributed randomly between plates.|
+| Additional Colors | (-255 to 255) | A number defining how many colors following (or preceeding) your selected color will be used to paint the plates. Colors are distributed randomly between plates.|
 | xWidth | A modifier to the thickness of the plates in x direction. It's not the exact width of the plates in the end. |
 | yWidth | A modifier to the thickness of the plates in y direction. It's not the exact width of the plates in the end. |
 
@@ -133,11 +122,19 @@ The color of the coat is always the currently selected color. It simply adds lay
 ![...](readme_img/im11.png?raw=true "Title")
 
 
-
-
-
 ### Riffle Shader (Early in development)
 
 This one cuts out vertical (mode 0) or horizontal (mode 1) lines from selected walls.
+It creates an impression of windows. Use an inner box of emmissive color, coated by some wother material and then use this shader to cut glowing windows into a building.
+
+| Parameter | Description |
+| ------ | ------ |
+| Max Volume | Defines multiple things. Horizontal windows (mode 1) will be bigger if this value is higher and cuts will be deeper, the higher this value is |
+| Random Seed | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
+| Allow Roofs | 0 for no, 1 for yes. If yes, roofs will be riffled, too. Else only walls will be cut.|
+| Density | Between 0 and 1. The higher this value, the lower the distance between cuts.|
+| Mode | 0 for vertical cuts. 1 For horizontal cuts |
 
 ![...](readme_img/im10.png?raw=true "Title")
+![...](readme_img/im12.png?raw=true "Title")
+![...](readme_img/im13.png?raw=true "Title")

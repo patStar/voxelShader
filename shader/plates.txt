@@ -6,22 +6,20 @@
 // arg : { id = '0'  name = 'Mode'  value = '3'  range = '0 4'  step = '1'  decimal = '0' }
 // arg : { id = '1'  name = 'Random Seed'  value = '123'  range = '0 1000000'  step = '1'  decimal = '0' }
 // arg : { id = '2'  name = 'Density'  value = '0.3'  range = '0 10'  step = '0.1'  decimal = '4' }
-// arg : { id = '3'  name = 'Color A'  value = '250'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '4'  name = 'Color B'  value = '254'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '5'  name = 'xWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '6'  name = 'yWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
-// arg : { id = '7'  name = 'zWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '3'  name = 'Addition Colors'  value = '0'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '4'  name = 'xWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '5'  name = 'yWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
+// arg : { id = '6'  name = 'zWidth'  value = '2'  range = '0 255'  step = '1'  decimal = '0' }
 // xs_end
 
 
 int mode = int(iArgs[0]);
 float seed = float(iArgs[1]);
 float density = float(iArgs[2]);
-float startColor = float(iArgs[3]);
-float endColor = float(iArgs[4]);
-float xMin = float(iArgs[5]);
-float yMin = float(iArgs[6]);
-float zMin = float(iArgs[7]);
+float colorRange = float(iArgs[3]);
+float xMin = float(iArgs[4]);
+float yMin = float(iArgs[5]);
+float zMin = float(iArgs[6]);
 
 float random(vec3 v){
 	float n = (v.x*2.0+1.)*(v.y*3.0+1.)*(v.z*4.0+1.) + seed;
@@ -71,7 +69,11 @@ float map(vec3 v) {
 		}
 		if( (mode > 2 && random( vec3( floor( (v.x+xShift) / xMin ), floor( (v.y+yShift) / yMin ), floor( (v.z+zShift) / zMin ) ) ) <= density) 
 			|| (mode <= 2 && random( vec3( floor( (v.x) / xMin ), floor( (v.y) / yMin ), floor( (v.z) / zMin ) ) ) <= density)){		
-			color = startColor + abs(sin( floor( (v.x+xShift) / xMin )+ floor( (v.y+yShift) / yMin )+ floor( (v.z+zShift) / zMin )) * (endColor-startColor-1.));
+			if(colorRange > 0){
+				color = i_color_index + abs(sin( floor( (v.x+xShift) / xMin )+ floor( (v.y+yShift) / yMin )+ floor( (v.z+zShift) / zMin )) * colorRange);
+			}else{
+				color = i_color_index;
+			}
 		}
 	}
 	return color;
