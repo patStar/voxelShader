@@ -25,7 +25,7 @@ float map(vec3 v) {
 		if(colorRange == 0.){
 			return i_color_index;
 		}else{
-			float layer = mod(floor(v.z/sliceHeight),colorRange + (colorRange > 0? 1 : -1.));
+			float layer = mod(floor(v.z/sliceHeight),colorRange + (colorRange > 0.? 1. : -1.));
 			
 			if(layer == 0.){
 				return i_color_index;

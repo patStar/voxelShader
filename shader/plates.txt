@@ -69,7 +69,7 @@ float map(vec3 v) {
 		}
 		if( (mode > 2 && random( vec3( floor( (v.x+xShift) / xMin ), floor( (v.y+yShift) / yMin ), floor( (v.z+zShift) / zMin ) ) ) <= density) 
 			|| (mode <= 2 && random( vec3( floor( (v.x) / xMin ), floor( (v.y) / yMin ), floor( (v.z) / zMin ) ) ) <= density)){		
-			if(colorRange > 0){
+			if(colorRange > 0.){
 				color = i_color_index + abs(sin( floor( (v.x+xShift) / xMin )+ floor( (v.y+yShift) / yMin )+ floor( (v.z+zShift) / zMin )) * colorRange);
 			}else{
 				color = i_color_index;
