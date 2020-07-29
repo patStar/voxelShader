@@ -14,7 +14,7 @@ float thickness = float(iArgs[0]);
 float seed = float(iArgs[1]);
 bool allowRoof = float(iArgs[2]) > 0.;
 float density = float(iArgs[3]);
-int mode = int(iArgs[4]);
+float mode = float(iArgs[4]);
 
 float random(vec3 v){
 	float n = (floor(v.x/thickness)+1.)*(floor(v.y/thickness)+1.) + seed;
@@ -43,7 +43,7 @@ bool hasNeighbors(vec3 v){
 float map(vec3 v) {
 	
 	if(random(v) < density){
-		if(mode == 0){
+		if(mode == 0.){
 			if(hasNeighbors(v) && mod(v.y+i_volume_size.y,2.) == mod(round(abs(sin(v.x)*i_volume_size.y))+0.5,2.)){		
 					return 0.;			
 			}else if(hasNeighbors(v) && mod(v.x+i_volume_size.x,2.) == mod(round(abs(sin(v.y)*i_volume_size.x))+0.5,2.)){		
