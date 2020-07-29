@@ -40,25 +40,29 @@ bool hasNeighbors(vec3 v){
 	return count == 3;
 }
 
+float fround(float f){
+	return float(round(f));
+}
+
 float map(vec3 v) {
 	
 	if(random(v) < density){
 		if(mode == 0.){
-			if(hasNeighbors(v) && mod(v.y+i_volume_size.y,2.) == mod(round(abs(sin(v.x)*i_volume_size.y))+0.5,2.)){		
+			if(hasNeighbors(v) && mod(v.y+i_volume_size.y,2.) == mod(fround(abs(sin(v.x)*i_volume_size.y))+0.5,2.)){		
 					return 0.;			
-			}else if(hasNeighbors(v) && mod(v.x+i_volume_size.x,2.) == mod(round(abs(sin(v.y)*i_volume_size.x))+0.5,2.)){		
+			}else if(hasNeighbors(v) && mod(v.x+i_volume_size.x,2.) == mod(fround(abs(sin(v.y)*i_volume_size.x))+0.5,2.)){		
 					return 0.;			
-			}else if(allowRoof && voxel(v+vec3(0,0,-1)) > 0. && voxel(v+vec3(0,0,1)) == 0. && mod(v.z+i_volume_size.z,2.) == mod(round(abs(sin(v.x)*i_volume_size.z))+0.5,2.)){		
+			}else if(allowRoof && voxel(v+vec3(0,0,-1)) > 0. && voxel(v+vec3(0,0,1)) == 0. && mod(v.z+i_volume_size.z,2.) == mod(fround(abs(sin(v.x)*i_volume_size.z))+0.5,2.)){		
 					return 0.;			
 			}
 		}else{
-			if(hasNeighbors(v) && mod(v.z+i_volume_size.z,2.) == mod(round(abs(sin(floor(v.x/thickness)+floor(v.y/thickness))*i_volume_size.z))+0.5,2.)){		
+			if(hasNeighbors(v) && mod(v.z+i_volume_size.z,2.) == mod(fround(abs(sin(floor(v.x/thickness)+floor(v.y/thickness))*i_volume_size.z))+0.5,2.)){		
 					return 0.;			
-			}else if(allowRoof && voxel(v+vec3(0,0,-1)) > 0. && voxel(v+vec3(0,0,1)) == 0. && mod(v.z+i_volume_size.z,2.) == mod(round(abs(sin(v.x)*i_volume_size.z))+0.5,2.)){		
+			}else if(allowRoof && voxel(v+vec3(0,0,-1)) > 0. && voxel(v+vec3(0,0,1)) == 0. && mod(v.z+i_volume_size.z,2.) == mod(fround(abs(sin(v.x)*i_volume_size.z))+0.5,2.)){		
 					return 0.;			
 			}
 		}
-	}
+	}	
 	
 	return voxel(v);	
 }
