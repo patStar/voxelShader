@@ -41,7 +41,7 @@ bool hasNeighbors(vec3 v){
 }
 
 float fround(float f){
-	return float(round(f));
+	return floor(f +.5);
 }
 
 float map(vec3 v) {
