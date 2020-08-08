@@ -1,0 +1,42 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Additional Colors'  value = '0'  range = '-255 255'  step = '1'  decimal = '0' }
+// xs_end
+
+float colorRange = float(iArgs[0]);
+
+bool shouldBePlaced(vec3 v){
+	
+	if(v.x == 0.5 && v.y == 0.5) return false;
+	if(v.z == 0.5 && v.y == 0.5) return false;
+	if(v.x == 0.5 && v.z == 0.5) return false;
+	
+	if(v.x == 0.5){
+		for(float x = 1.5; x < i_volume_size.x-0.5; x++){
+			if(voxel(vec3(x,v.y,v.z)) != 0. ) return true;
+		}
+	}	
+	if(v.y == 0.5){
+		for(float y = 1.5; y < i_volume_size.y-0.5; y++){
+			if(voxel(vec3(v.x,y,v.z)) != 0.) return true;
+		}
+	}	
+	if(v.z == 0.5){
+		for(float z = 1.5; z < i_volume_size.z-0.5; z++){
+			if(voxel(vec3(v.x,v.y,z)) != 0.) return true;
+		}
+	}	
+	
+	return false;
+}
+
+float map(vec3 v) {
+	if(shouldBePlaced(v)){
+		return i_color_index;
+	}else{
+		return voxel(v);
+	}
+}

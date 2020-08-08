@@ -1,0 +1,46 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Additional Colors'  value = '0'  range = '-255 255'  step = '1'  decimal = '0' }
+// arg : { id = '1'  name = 'Minimum Sides'  value = '2'  range = '1 3'  step = '1'  decimal = '0' }
+// xs_end
+
+float colorRange = float(iArgs[0]);
+float numberOfSides = float(iArgs[1]);
+
+bool shouldBePlaced(vec3 v){
+
+	if(v.x == 0.5 || v.y == 0.5 || v.z == 0.5) return false;
+
+	int sides = 0; 
+	if(voxel(vec3(0.5,v.y,v.z)) == i_color_index ){
+		sides++;
+	}
+	if(voxel(vec3(v.x,v.y,0.5)) == i_color_index ){
+		sides++;
+	}
+	if(voxel(vec3(v.x,0.5,v.z)) == i_color_index ){
+		sides++;
+	}
+	if(voxel(vec3(i_volume_size.x-.5,v.y,v.z)) == i_color_index ){
+		sides++;
+	}
+	if(voxel(vec3(v.x,v.y,i_volume_size.z-.5)) == i_color_index ){
+		sides++;
+	}
+	if(voxel(vec3(v.x,i_volume_size.y-.5,v.z)) == i_color_index ){
+		sides++;
+	}
+	
+	return float(sides) >= numberOfSides; 
+}
+
+float map(vec3 v) {
+	if(shouldBePlaced(v)){
+		return 1;
+	}else{
+		return voxel(v);
+	}
+}
