@@ -1,0 +1,60 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Object color'  value = '1'  range = '1 255'  step = '1'  decimal = '0' }
+// arg : { id = '1'  name = 'Radius Modifier'  value = '0.6'  range = '0 1'  step = '0.01'  decimal = '2' }
+// xs_end
+
+float objectColor = float(iArgs[0]);
+float radiusModifier = float(iArgs[1]);
+
+float distance(vec3 a, vec3 b){
+	return sqrt(pow(a.x-b.x,2.)+pow(a.y-b.y,2.)+pow(a.z-b.z,2.));
+}
+
+bool shouldBePlaced(vec3 v){
+	
+	if(v.x == 0.5 && v.y == 0.5) return false;
+	if(v.z == 0.5 && v.y == 0.5) return false;
+	if(v.x == 0.5 && v.z == 0.5) return false;
+		
+	float baseY = i_volume_size.y+0.5;
+	
+	for(float y=0.5; y<i_volume_size.y; y++ ){		
+		for(float z=0.5; z<i_volume_size.z; z++ ){				
+			if(voxel(vec3(0.5,y, z)) == i_color_index){				
+				if(baseY > y){
+					baseY = y;					
+				}
+				break;
+			}			
+		}	
+	}		
+		
+	float xCenter = floor(i_volume_size.x/2.) + 0.5;
+	
+	vec3 center = vec3(xCenter,baseY,v.z);
+
+	float dist = distance(center, v);	
+		
+	for(float y=baseY ;y<i_volume_size.y; y++ ){		
+		if(voxel(vec3(0.5, y, v.z)) == i_color_index){
+			if(abs(dist - (y-baseY)) < radiusModifier){
+				return true;
+			}			
+		}			
+	}	
+	
+	return false;
+}
+
+float map(vec3 v) {
+	if(shouldBePlaced(v)){
+		return objectColor;
+	}else if(voxel(v) != objectColor){
+		return voxel(v);
+	}
+	return .0;
+}
