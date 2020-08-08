@@ -29,23 +29,54 @@ bool shouldBePlaced(vec3 v){
 					baseY = y;					
 				}
 				break;
-			}			
+			}								
 		}	
 	}		
 		
-	float xCenter = floor(i_volume_size.x/2.) + 0.5;
-	
-	vec3 center = vec3(xCenter,baseY,v.z);
-
-	float dist = distance(center, v);	
+	if(baseY != i_volume_size.y+0.5){
+		float xCenter = floor(i_volume_size.x/2.) + 0.5;
 		
-	for(float y=baseY ;y<i_volume_size.y; y++ ){		
-		if(voxel(vec3(0.5, y, v.z)) == i_color_index){
-			if(abs(dist - (y-baseY)) < radiusModifier){
-				return true;
+		vec3 center = vec3(xCenter,baseY,v.z);
+
+		float dist = distance(center, v);	
+			
+		for(float y=baseY ;y<i_volume_size.y; y++ ){		
+			if(voxel(vec3(0.5, y, v.z)) == i_color_index){
+				if(abs(dist - (y-baseY)) < radiusModifier){
+					return true;
+				}			
 			}			
-		}			
+		}	
+	}
+	
+	float baseX = i_volume_size.x+0.5;
+	
+	for(float x=0.5; x<i_volume_size.x; x++ ){		
+		for(float z=0.5; z<i_volume_size.z; z++ ){				
+			if(voxel(vec3(x,0.5, z)) == i_color_index){				
+				if(baseX > x){
+					baseX = x;					
+				}
+				break;
+			}								
+		}	
 	}	
+	
+	if(baseX != i_volume_size.x+0.5){
+		float yCenter = floor(i_volume_size.y/2.) + 0.5;
+		
+		vec3 center = vec3(baseX,yCenter,v.z);
+
+		float dist = distance(center, v);	
+			
+		for(float x=baseX ;x<i_volume_size.x; x++ ){		
+			if(voxel(vec3(x, 0.5, v.z)) == i_color_index){
+				if(abs(dist - (x-baseX)) < radiusModifier){
+					return true;
+				}			
+			}			
+		}	
+	}
 	
 	return false;
 }
