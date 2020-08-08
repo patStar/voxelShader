@@ -39,7 +39,7 @@ bool shouldBePlaced(vec3 v){
 
 float map(vec3 v) {
 	if(shouldBePlaced(v)){
-		return 1;
+		return 1.;
 	}else{
 		return voxel(v);
 	}
