@@ -1,0 +1,69 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Angle'  value = '20'  range = '0 360'  step = '1'  decimal = '0' }
+// arg : { id = '1'  name = 'Center Shift'  value = '0'  range = '-256 256'  step = '1'  decimal = '0' }
+// xs_end
+
+float PI = 3.1415926538;
+
+float anglePerStep = float(iArgs[0]);
+float centerShift = float(iArgs[1]);
+
+
+float distanceXY(vec3 a, vec3 b){
+	return sqrt(pow(a.x-b.x,2.)+pow(a.y-b.y,2.));
+}
+
+float mapScrew(vec3 v){
+	bool centerComputed = false;
+	vec3 center = vec3(i_volume_size.x/2.,i_volume_size.y/2.,i_volume_size.z/2.);
+	float height = -.5;
+	
+	for(float z = 0.5; z<i_volume_size.z; z++){
+		for(float x = 0.5; x<i_volume_size.x; x++){
+			for(float y = 0.5; y<i_volume_size.y; y++){			
+				if(voxel(vec3(x,y,z)) == i_color_index){				
+					center = vec3(x,y,z);									
+					centerComputed = true;
+					break;
+				}else if(voxel(vec3(x,y,z)) != 0.){				
+					height = z;
+				}
+			}	
+			if(centerComputed) break;
+		}
+		if(centerComputed) break;
+	}	
+	
+	height += .5;
+	
+	float d = distanceXY(center, v);
+	
+	float angle = (anglePerStep / 360.)*2.*PI * floor(floor(v.z)/height);	
+	
+	float copyPositionZ = mod(v.z , height);
+	
+	vec3 distanceVector = v - center;
+	distanceVector.z = 0.;
+	
+	vec3 voxelToCopy = vec3(distanceVector.x* cos(angle) - distanceVector.y * sin(angle), distanceVector.x* sin(angle) + distanceVector.y * cos(angle), copyPositionZ);
+	voxelToCopy.x += center.x;
+	voxelToCopy.y += center.y;
+	voxelToCopy += vec3(centerShift,centerShift,0.);
+	
+	if(v.z > height){
+		if(voxel(voxelToCopy) != i_color_index){
+			return voxel(voxelToCopy);
+		}
+		return 0.;
+	}
+	
+	return voxel(v);
+}
+
+float map(vec3 v) {
+	return mapScrew(v);
+}

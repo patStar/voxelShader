@@ -8,8 +8,6 @@
 // arg : { id = '2'  name = 'Shape'  value = '0'  range = '0 2'  step = '1'  decimal = '0' }
 // xs_end
 
-float PI = 3.1415926538;
-
 float objectColor = float(iArgs[0]);
 float radiusModifier = float(iArgs[1]);
 float shape = float(iArgs[2]);
