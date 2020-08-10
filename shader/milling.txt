@@ -4,14 +4,73 @@
 // xs_begin
 // author : '@rubikow'
 // arg : { id = '0'  name = 'Object color'  value = '1'  range = '1 255'  step = '1'  decimal = '0' }
-// arg : { id = '1'  name = 'Radius Modifier'  value = '0.6'  range = '0 1'  step = '0.01'  decimal = '2' }
+// arg : { id = '1'  name = 'Radius Modifier'  value = '0.6'  range = '0 1'  step = '0.01'  decimal = '3' }
+// arg : { id = '2'  name = 'Shape'  value = '0'  range = '0 2'  step = '1'  decimal = '0' }
 // xs_end
+
+float PI = 3.1415926538;
 
 float objectColor = float(iArgs[0]);
 float radiusModifier = float(iArgs[1]);
+float shape = float(iArgs[2]);
+
+float vecLen(vec2 v){
+	return sqrt(pow(v.x,2.)+pow(v.y,2.));
+}
 
 float distance(vec3 a, vec3 b){
 	return sqrt(pow(a.x-b.x,2.)+pow(a.y-b.y,2.)+pow(a.z-b.z,2.));
+}
+
+float manhattan(vec3 a, vec3 b){
+	return abs(a.x-b.x)+abs(a.y-b.y);
+}
+
+float squareIt(vec3 v){
+	if(v.x == 0.5 && voxel(v) != objectColor) return voxel(v);
+	if(v.x == 0.5 && voxel(v) == objectColor) return .0;
+	if(v.y == 0.5 && voxel(v) != objectColor) return voxel(v);
+	if(v.y == 0.5 && voxel(v) == objectColor) return .0;
+
+	float kCenter = 1000.;
+	float kMax = -1.;
+	
+	if(kMax == -1)
+	{
+		for(float y=0.5; y<i_volume_size.y; y++ ){		
+			for(float z=0.5; z<i_volume_size.z; z++ ){				
+				if(voxel(vec3(0.5,y, z)) == i_color_index){				
+					if(kCenter > y){
+						kCenter = y;					
+					}
+					break;
+				}					
+			}	
+		}	
+		
+		if(kCenter != 1000.){
+			for(float y=0.5; y<i_volume_size.y; y++){
+				if(y > kMax && voxel(vec3(0.5,y,v.z)) == i_color_index){
+					kMax = y;
+				}
+			}
+		}
+	}
+
+	
+	if(kMax != -1){		
+		float kMin = 2 * kCenter - kMax;
+			
+		if(v.x >= kMin && v.x <= kMax && v.y >= kMin && v.y <= kMax){
+			return objectColor;
+		}
+	}
+	
+	if(voxel(v) == objectColor){
+		return .0;
+	}
+	
+	return voxel(v);
 }
 
 bool shouldBePlaced(vec3 v){
@@ -29,61 +88,40 @@ bool shouldBePlaced(vec3 v){
 					baseY = y;					
 				}
 				break;
-			}								
+			}					
 		}	
 	}		
 		
 	if(baseY != i_volume_size.y+0.5){
 		float xCenter = floor(i_volume_size.x/2.) + 0.5;
 		
-		vec3 center = vec3(xCenter,baseY,v.z);
-
-		float dist = distance(center, v);	
-			
+		vec3 center = vec3(xCenter,baseY,v.z);					
+		
+		float dist = 0.;
+		
+		if(shape == 0.0){
+			dist = distance(center, v);	
+		}else{
+			dist = manhattan(center, v);
+		}		
+		
 		for(float y=baseY ;y<i_volume_size.y; y++ ){		
 			if(voxel(vec3(0.5, y, v.z)) == i_color_index){
 				if(abs(dist - (y-baseY)) < radiusModifier){
 					return true;
 				}			
 			}			
-		}	
+		}
 	}
-	
-	float baseX = i_volume_size.x+0.5;
-	
-	for(float x=0.5; x<i_volume_size.x; x++ ){		
-		for(float z=0.5; z<i_volume_size.z; z++ ){				
-			if(voxel(vec3(x,0.5, z)) == i_color_index){				
-				if(baseX > x){
-					baseX = x;					
-				}
-				break;
-			}								
-		}	
-	}	
-	
-	if(baseX != i_volume_size.x+0.5){
-		float yCenter = floor(i_volume_size.y/2.) + 0.5;
 		
-		vec3 center = vec3(baseX,yCenter,v.z);
-
-		float dist = distance(center, v);	
-			
-		for(float x=baseX ;x<i_volume_size.x; x++ ){		
-			if(voxel(vec3(x, 0.5, v.z)) == i_color_index){
-				if(abs(dist - (x-baseX)) < radiusModifier){
-					return true;
-				}			
-			}			
-		}	
-	}
-	
 	return false;
 }
 
 float map(vec3 v) {
-	if(shouldBePlaced(v)){
+	if((shape==0. || shape == 1.) && shouldBePlaced(v)){
 		return objectColor;
+	}else if(shape == 2.){
+		return squareIt(v);
 	}else if(voxel(v) != objectColor){
 		return voxel(v);
 	}
