@@ -33,7 +33,7 @@ float squareIt(vec3 v){
 	float kCenter = 1000.;
 	float kMax = -1.;
 	
-	if(kMax == -1)
+	if(kMax == -1.)
 	{
 		for(float y=0.5; y<i_volume_size.y; y++ ){		
 			for(float z=0.5; z<i_volume_size.z; z++ ){				
@@ -56,8 +56,8 @@ float squareIt(vec3 v){
 	}
 
 	
-	if(kMax != -1){		
-		float kMin = 2 * kCenter - kMax;
+	if(kMax != -1.){		
+		float kMin = 2. * kCenter - kMax;
 			
 		if(v.x >= kMin && v.x <= kMax && v.y >= kMin && v.y <= kMax){
 			return objectColor;
