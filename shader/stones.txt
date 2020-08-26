@@ -1,0 +1,77 @@
+// ref: Voronoi 3D code by @mode_vis 
+
+// xs_begin
+// author : '@mode_vis'
+// arg : { id = '0' name = 'Scale' value = '1.0' range = '0.01 100.0' step = '.05'	decimal = '2' }
+// arg : { id = '1' name = 'Seed' value = '100' range = '0.0 1000.' step = '1'	decimal = '3' }
+// arg : { id = '2' name = 'Cluster Size' value = '1' range = '1 5' step = '1'	decimal = '0' }
+// xs_end
+
+float randomF(float x)
+{
+    return fract(sin(x * 35.7313) * 437.5453);
+}
+
+float randomVec(vec3 co, float seed)
+{
+    return fract(sin(dot(co,vec3(324.56422, 92.34752, 39.8465782))) * (2937.472+ seed));
+}
+
+vec3 randomizePoint(vec3 co, float seed)
+{
+    float x = randomVec(co, seed);
+    float y = randomF(x);
+    float z = randomF(y);
+
+    return vec3(x, y, z);
+}
+
+float determineClusterValue(vec3 p, float seed)
+{
+	
+    vec3 baseCoordinate = floor(p);
+    vec3 innerCoordinate = fract(p);
+
+    float minDistance = 99999.;
+    vec3 minVector = baseCoordinate;
+
+    for(int i = -1; i <= 1; i++)
+    for(int j = -1; j <= 1; j++)
+    for(int k = -1; k <= 1; k++)
+    {
+		vec3 shiftCoordinate = vec3(i,j,k);
+    	vec3 randomizedPoint = randomizePoint(baseCoordinate + shiftCoordinate, 23245.345 + seed);
+        randomizedPoint += shiftCoordinate;
+		float externalDistance = distance(randomizedPoint, innerCoordinate);
+   
+        if (externalDistance < minDistance)
+        {
+            minDistance = externalDistance;
+            minVector = baseCoordinate + shiftCoordinate;
+        }
+    }
+    
+    return randomVec(minVector,4235.345 + seed);
+}
+
+
+
+float map(vec3 v)   
+{ 
+	vec3 center = i_volume_size * 0.5;
+	vec3 distanceFromCenter = v-center;	
+	
+	vec3 modifiedDistanceFromCenter = distanceFromCenter * .02/ (2.*(i_args[0]*min(min(i_volume_size.x,i_volume_size.y),i_volume_size.z)/246.0));	
+	
+	float try = 0;
+	while(try < i_args[2])	{
+		float col = 200*determineClusterValue(modifiedDistanceFromCenter, i_args[1] + try * 2345.234);
+
+		if(floor(1.0+col)== 1. && fract(1.0+col) < 0.5){
+			return 1.0+col;
+		}
+		try++;
+	}
+
+	return 0.0;
+}
