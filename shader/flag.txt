@@ -1,0 +1,72 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Frame'  value = '1'  range = '-1000000 1000000'  step = '1'  decimal = '0' }
+// arg : { id = '1'  name = 'Width'  value = '128'  range = '1 256'  step = '1'  decimal = '0' }
+// arg : { id = '2'  name = 'Height'  value = '100'  range = '1 256'  step = '1'  decimal = '0' }
+// arg : { id = '3'  name = 'Thickness'  value = '1'  range = '0 256'  step = '1'  decimal = '0' }
+// arg : { id = '4'  name = 'Wavelength'  value = '10'  range = '-256 256'  step = '1'  decimal = '0' }
+// arg : { id = '5'  name = 'Max.Altitude'  value = '3.1'  range = '-256 256'  step = '.1'  decimal = '2' }
+// arg : { id = '6'  name = 'Distortion'  value = '0.25'  range = '-256 256'  step = '.1'  decimal = '2' }
+// arg : { id = '7'  name = 'Noise'  value = '10'  range = '-256 256'  step = '1'  decimal = '2' }
+// xs_end
+
+float random(vec3 v, float seed){
+	float n = v.x*v.y*v.z + seed;
+
+	return abs(fract(sin(1./tan(n) + seed * 1235.342)));
+}
+
+vec2 grad(vec2 p){
+	return vec2( random(vec3(p.x,p.y,234.5),p.x),random(vec3(p.y,356.123,p.x),8475.34));
+}
+
+float fade(float t) {
+  return t*t*t*(t*(t*6.0 - 15.0) + 10.0);
+}
+
+float noise(vec2 p) {
+  
+  vec2 p0 = floor(p);
+  vec2 p1 = p0 + vec2(1.0, 0.0);
+  vec2 p2 = p0 + vec2(0.0, 1.0);
+  vec2 p3 = p0 + vec2(1.0, 1.0);
+    
+  vec2 g0 = grad(p0);
+  vec2 g1 = grad(p1);
+  vec2 g2 = grad(p2);
+  vec2 g3 = grad(p3);
+    
+  float t0 = p.x - p0.x;
+  float fade_t0 = fade(t0); /* Used for interpolation in horizontal direction */
+
+  float t1 = p.y - p0.y;
+  float fade_t1 = fade(t1); /* Used for interpolation in vertical direction. */
+
+  /* Calculate dot products and interpolate.*/
+  float p0p1 = (1.0 - fade_t0) * dot(g0, (p - p0)) + fade_t0 * dot(g1, (p - p1)); /* between upper two lattice points */
+  float p2p3 = (1.0 - fade_t0) * dot(g2, (p - p2)) + fade_t0 * dot(g3, (p - p3)); /* between lower two lattice points */
+  
+  /* Calculate final result */
+  return (1.0 - fade_t1) * p0p1 + fade_t1 * p2p3;
+}
+
+
+float map(vec3 v) {
+	
+	vec3 center = i_volume_size * 0.5;
+
+	vec2 v2 = vec2(v.y+1000+iArgs[0],(v.z-iArgs[0])/5);
+	float n = noise(v2/64) * 1 + noise(v2/32) * 0.5 + noise(v2/16) * 0.25 + noise(v2/8) * 0.125;
+	float sinFun = sin((v.y-(v.z+iArgs[0]*10)*iArgs[6])/iArgs[4]) * iArgs[5] + n*iArgs[5]*iArgs[7];	
+	
+	
+	if(abs(floor(v.x) - floor(center.x+sinFun)) < iArgs[3] && v.y < iArgs[1] && v.z < iArgs[2]){
+		return 5;
+	}
+		
+	
+	return 0;
+}
