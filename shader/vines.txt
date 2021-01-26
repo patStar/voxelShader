@@ -1,0 +1,45 @@
+// MIT License (MIT)
+// Copyright (c) 2021 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  var='seed1' name = 'Random Seed 1'  value = '2334.5'  range = '0.0 10000.0'  step = '0.1'  decimal = '2' }
+// arg : { id = '1'  var='seed2' name = 'Random Seed 2'  value = '1237.75'  range = '0.0 10000.0'  step = '0.1'  decimal = '2' }
+// arg : { id = '2'  var='limit' name = 'Growth Limit'  value = '0.9'  range = '0.0 1.0'  step = '0.1'  decimal = '2' }
+// arg : { id = '3'  var='limit2' name = 'Length Limit'  value = '30'  range = '0 500'  step = '1'  decimal = '0' }
+// xs_end
+
+float random(vec3 v, float seed){
+	float n = v.x*v.y + seed;
+
+	return abs(fract(sin(1./tan(n) + seed * 1235.342)));
+}
+
+float getNextColor(vec3 v){
+	
+	float distance = -1.;
+	for(float z=v.z; z<i_volume_size.z; z++){		
+		if (voxel(vec3(v.x,v.y,z)) == i_color_index) {
+			distance = z-v.z;
+		}else if (distance != -1 && voxel(vec3(v.x,v.y,z)) != i_color_index) {
+			break;
+		}
+	}
+	if(distance == -1 || distance > int(iArgs[3])*random(v,234.1)){
+		return 0.;
+	}
+	
+	float r = random(v, float(iArgs[0]));
+	if( r < float(iArgs[2]) && (v.z/i_volume_size.z) > random(v, float(iArgs[1])) ){
+		return i_color_index;
+	}
+	return 0.;
+}
+
+float map(vec3 v) {		
+	if (voxel(v) != 0) {
+		return voxel(v);
+	}
+	
+	return getNextColor(v);
+}
