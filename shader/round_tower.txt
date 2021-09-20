@@ -10,7 +10,7 @@
 
 float radiusModifier = float(iArgs[0]);
 float sliceHeight = float(iArgs[1]);
-float colorRange = float(iArgs[3]);
+float colorRange = float(iArgs[2]);
 
 float map(vec3 v) {	
 	vec3 center = i_volume_size * 0.5;
