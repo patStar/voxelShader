@@ -23,14 +23,14 @@ float map(vec3 v) {
 	
     if(inEllipse){		
 		if(colorRange == 0.){
-			return i_color_index;
+			return float(i_color_index);
 		}else{
-			float layer = mod(floor(v.z/sliceHeight),colorRange + (colorRange > 0? 1 : -1.));
+			float layer = mod(floor(v.z/sliceHeight),colorRange + (colorRange > 0.? 1. : -1.));
 			
 			if(layer == 0.){
-				return i_color_index;
+				return float(i_color_index);
 			}else{
-				return i_color_index + (colorRange * layer/colorRange);
+				return float(i_color_index) + (colorRange * layer/colorRange);
 			}
 		}
 	}
