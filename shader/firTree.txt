@@ -1,0 +1,49 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// arg : { id = '0'  name = 'Random Seed'  value = '123'  range = '0 1000000'  step = '1'  decimal = '3' }
+// arg : { id = '1'  name = 'Number of Random Points'  value = '300'  range = '0 1000'  step = '1'  decimal = '0' }
+// arg : { id = '2'  name = 'Bow'  value = '0.7'  range = '-256 256'  step = '0.001'  decimal = '3' }
+// arg : { id = '3'  name = 'Cone'  value = '100'  range = '0 256'  step = '1'  decimal = '0' }
+// arg : { id = '4'  name = 'Zaggy'  value = '0'  range = '-256 256'  step = '1'  decimal = '0' }
+// arg : { id = '5'  name = 'Thickness'  value = '0.1'  range = '0 1'  step = '0.001'  decimal = '3' }
+// xs_end
+
+float random(vec3 v){
+	return fract(sin(dot(v, vec3(12342.2345,345.3445,2.656)))*345.342);
+}
+
+vec3 randomV(float number){
+	return vec3(sin((mod(number*iArgs[0],34.54)/3.+iArgs[0])*213.5126)*i_volume_size.x/2., cos(pow(mod(number,14.544)/3.,3.)*(35.43+iArgs[0]))*i_volume_size.y/2., sin(pow(mod(number,4.589)/3.+iArgs[0],2.)*985.4243)*i_volume_size.z/2.)+i_volume_size/2.;
+}
+
+float map(vec3 c) {	
+
+	vec3 v = vec3(c.x,c.y,c.z+pow(distance(c,(i_volume_size/2.)),iArgs[2]));
+
+	if(distance(v.xy+vec2(2.*random(v),2.*random(-v)), (i_volume_size/2.).xy) < iArgs[3] - (v.z/i_volume_size.z)*(iArgs[3]-(1.-random(v)*iArgs[4]))){	
+		for(int i=0; i<int(iArgs[1]); i++){
+			vec3 r = randomV(float(i));
+			if(distance(v, r) < 1.){
+				return float(i_color_index);
+			}						
+			
+			if(floor(r.z) == floor(v.z)){				
+				float sx = (v.x - (i_volume_size/2.).x)/r.x;
+				float sy = (v.y - (i_volume_size/2.).y)/r.y;	
+				
+				if(abs(abs(sx) - abs(sy)) < iArgs[5]){
+					return float(i_color_index);
+				}
+			}
+		}
+	}
+	
+	if(distance(v.xy+vec2(2.*random(v),2.*random(-v)), (i_volume_size/2.).xy) < 8. - (v.z/i_volume_size.z)*8.){
+		return i_color_index;
+	}
+	
+	return 0.0;
+}
