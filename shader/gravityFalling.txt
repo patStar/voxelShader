@@ -1,0 +1,88 @@
+// Procedural 3DVoronoi Generator by @mode_vis 
+// for MagicaVoxel 0.99.5.1 by @ephtracy
+// ref: Voronoi 3D_ by Anskiere shadertoy.com/view/wlcGzN
+
+// xs_begin
+// author : '@mode_vis'
+// -arg : { id = '0' name = 'Mode' value = '1' range = '1 3' step = '1'	decimal = '0' }
+// xs_end
+
+//===== user args =====
+// uniform float	i_args[8];
+
+//===== built-in args =====
+// uniform vec3		i_volume_size;	// volume size [1-256]
+// uniform float	i_color_index;	// color index [0-255]
+// uniform vec3		i_mirror;		// mirror mode [0,1]
+// uniform vec3		i_axis;			// axis mode [0,1]
+// uniform float	i_iter;			// iteration index
+
+//===== built-in functions ===== 
+// float voxel( vec3 v );			// get voxel color index at position v
+
+//float map( vec3 v ) {				// generate a new voxel color index [0, 255] at position v ( v is at the center of voxel, such as vec3( 1.5, 2.5, 4.5 ) )
+
+float map(vec3 v)   
+{
+	if(voxel(v) == 0.0 || voxel(v) == i_color_index)
+	{
+		//My position is 												Z
+		//find the next ground voxel at position 						Zg
+		//find the number of color voxels below me but above Zg		Nb		
+		//These colored voxels will stack onto the Zg so there is 	Zn = Zg+Nb
+		//Now find the next ceiling voxel above me					Zc
+		//Count all color voxels above me up to Zc					Na
+		//These colored voxels will stack onto the Zn so there is 	Zf = Zg+Nb+Na
+		//
+		//Now: If  Z < Zg+Nb+Na i will be a voxel soon :)
+		
+		float nextGroundVoxel = v.z - 1.0;
+		float nextCeilingVoxel = v.z - 1.0;
+		
+		int numberOfMatchingVoxelsBelowMe = 0;
+		int numberOfMatchingVoxelsAboveMe = 0;
+		
+		for(float z=v.z-1.; z>=0.; z--)
+		{
+			float color = voxel(vec3(v.x,v.y,z));
+			if(color != 0.0)
+			{
+				if(color == i_color_index)
+				{
+					numberOfMatchingVoxelsBelowMe++;
+				}
+				else
+				{
+					nextGroundVoxel = z;
+					break;
+				}
+			}
+		}
+		
+		for(float z=v.z+1.; z<i_volume_size.z; z++)
+		{
+			float color = voxel(vec3(v.x,v.y,z));
+			if(color != 0.0)
+			{
+				if(color == i_color_index)
+				{
+					numberOfMatchingVoxelsAboveMe++;
+				}else{
+					nextCeilingVoxel = z;
+					break;
+				}
+			}
+		}
+		
+		if(v.z < nextGroundVoxel + float(numberOfMatchingVoxelsBelowMe) + float(numberOfMatchingVoxelsAboveMe))
+		{
+			return i_color_index;
+		}	
+		else
+		{
+			return 0.0;
+		}		
+	}
+		
+	return voxel(v);
+}

@@ -1,0 +1,70 @@
+// Procedural 3DVoronoi Generator by @mode_vis 
+// for MagicaVoxel 0.99.5.1 by @ephtracy
+// ref: Voronoi 3D_ by Anskiere shadertoy.com/view/wlcGzN
+
+// xs_begin
+// author : '@mode_vis'
+// -arg : { id = '0' name = 'Mode' value = '1' range = '1 3' step = '1'	decimal = '0' }
+// xs_end
+
+//===== user args =====
+// uniform float	i_args[8];
+
+//===== built-in args =====
+// uniform vec3		i_volume_size;	// volume size [1-256]
+// uniform float	i_color_index;	// color index [0-255]
+// uniform vec3		i_mirror;		// mirror mode [0,1]
+// uniform vec3		i_axis;			// axis mode [0,1]
+// uniform float	i_iter;			// iteration index
+
+//===== built-in functions ===== 
+// float voxel( vec3 v );			// get voxel color index at position v
+
+//float map( vec3 v ) {				// generate a new voxel color index [0, 255] at position v ( v is at the center of voxel, such as vec3( 1.5, 2.5, 4.5 ) )
+
+float map(vec3 v)   
+{
+	if(voxel(v) == 0.)
+	{
+		int numberOfClearVoxelsBelowMe = 0;
+		for(float i=1.; i<=floor(v.z); i++)
+		{
+			if(voxel(v - vec3(0,0,i)) == 0.)
+			{
+				numberOfClearVoxelsBelowMe++;					
+			}
+			else
+			{
+				break;
+			}
+		}
+		
+		// now search for a stack of voxels of the color above me
+		
+		int numberOfMatchingVoxelsAboveMe = 0;
+		
+		for(float i=1.; i<i_volume_size.z - floor(v.z); i++)
+		{
+			float color = voxel(v + vec3(0,0,i));
+			if(color == 0.)
+			{
+				continue;
+			}
+			else if(color == i_color_index)
+			{
+				numberOfMatchingVoxelsAboveMe++;
+			}
+			else
+			{
+				break;
+			}
+		}
+		
+		if(numberOfMatchingVoxelsAboveMe > 0)
+		{
+			return i_color_index;
+		}
+	}	
+
+	return voxel(v);
+}

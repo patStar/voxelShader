@@ -1,0 +1,58 @@
+// Procedural 3DVoronoi Generator by @mode_vis 
+// for MagicaVoxel 0.99.5.1 by @ephtracy
+// ref: Voronoi 3D_ by Anskiere shadertoy.com/view/wlcGzN
+
+// xs_begin
+// author : '@mode_vis'
+// -arg : { id = '0' name = 'Mode' value = '1' range = '1 3' step = '1'	decimal = '0' }
+// xs_end
+
+//===== user args =====
+// uniform float	i_args[8];
+
+//===== built-in args =====
+// uniform vec3		i_volume_size;	// volume size [1-256]
+// uniform float	i_color_index;	// color index [0-255]
+// uniform vec3		i_mirror;		// mirror mode [0,1]
+// uniform vec3		i_axis;			// axis mode [0,1]
+// uniform float	i_iter;			// iteration index
+
+//===== built-in functions ===== 
+// float voxel( vec3 v );			// get voxel color index at position v
+
+//float map( vec3 v ) {				// generate a new voxel color index [0, 255] at position v ( v is at the center of voxel, such as vec3( 1.5, 2.5, 4.5 ) )
+
+float map(vec3 v)   
+{	
+	float lowestFallableVoxel = -1.;
+	float lastFreeField = -1.;
+	float lastFilledField = -1.;
+
+	for(float z=0.; z<i_volume_size.z; z++)
+	{		
+		float color = voxel(vec3(floor(v.x),floor(v.y), z));
+		if(color == 0.0 && (lastFilledField > lastFreeField || lastFreeField == -1.))
+		{
+			lastFreeField = z;
+		}
+		else if(color != 0.0)
+		{			
+			if(color == i_color_index)
+			{
+				if(lastFreeField > lastFilledField && lastFreeField < z){
+					lowestFallableVoxel = z;
+					break;
+				}				
+			}
+			lastFilledField = z;
+		}				
+	}
+
+	if(floor(v.z) == lastFreeField && lowestFallableVoxel > -1.){
+		return i_color_index;
+	} else if(floor(v.z) == lowestFallableVoxel){
+		return 0.0;
+	} else {
+		return voxel(v);
+	}
+}
