@@ -1,10 +1,11 @@
-// Procedural 3DVoronoi Generator by @mode_vis 
-// for MagicaVoxel 0.99.5.1 by @ephtracy
-// ref: Voronoi 3D_ by Anskiere shadertoy.com/view/wlcGzN
+// MIT License (MIT)
+// Copyright (c) 2021 Patrick Seeber
+//
+// Layered Gravity Shader by @Rubikow
+// for MagicaVoxel 0.99.6.4 by @ephtracy
 
 // xs_begin
-// author : '@mode_vis'
-// -arg : { id = '0' name = 'Mode' value = '1' range = '1 3' step = '1'	decimal = '0' }
+// author : '@Rubikow'
 // xs_end
 
 //===== user args =====
