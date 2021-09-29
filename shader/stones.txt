@@ -1,7 +1,11 @@
-// ref: Voronoi 3D code by @mode_vis 
+// MIT License (MIT)
+// Copyright (c) 2021 Patrick Seeber
+//
+// Stones Shader by @Rubikow
+// for MagicaVoxel 0.99.6.4 by @ephtracy
 
 // xs_begin
-// author : '@mode_vis'
+// author : '@Rubikow'
 // arg : { id = '0' name = 'Scale' value = '1.0' range = '0.01 100.0' step = '.05'	decimal = '2' }
 // arg : { id = '1' name = 'Seed' value = '100' range = '0.0 1000.' step = '1'	decimal = '3' }
 // arg : { id = '2' name = 'Cluster Size' value = '1' range = '1 5' step = '1'	decimal = '0' }
