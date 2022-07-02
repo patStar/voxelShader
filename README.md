@@ -187,3 +187,10 @@ For example if you draw a stair with only the top voxels, this shader can fill i
 
 <img src="readme_img/im23.png" width=1000/>
 
+
+### Fir Tree
+
+Creates fir trees
+
+<img src="readme_img/im26.png" width=1000/>
+
