@@ -153,3 +153,13 @@ Layers can be colored differently using the Additional Colors parameter.
 
 <img src="readme_img/im17.png" width=1000/>
 
+### Curve Map
+
+This parameterless shader simpy highlights all edges and rims on a certain model in the currentyl selected color.
+This can be usefull in combination with the patina shader or the overgrowth shader.
+
+![...](readme_img/im18.png?raw=true "Before")
+![...](readme_img/im19.png?raw=true "After")
+
+
+
