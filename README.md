@@ -178,5 +178,5 @@ This shader will cast down all voxels at once. So if you have 5 white voxels sta
 Select a color and this shader will fill in all empty voxels below all voxels of the selected color. 
 For example if you draw a stair with only the top voxels, this shader can fill in the supporting voxels below it.
 
-<img src="readme_img/im22.png" width=1000/>
+<img src="readme_img/im23.png" width=1000/>
 
