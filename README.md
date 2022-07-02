@@ -172,6 +172,13 @@ This shader will cast down all voxels at once. So if you have 5 white voxels sta
 <img src="readme_img/im21.png" width=1000/>
 
 
+### Gravity Layer 
+
+Same as Gravity Falling but this one only pulls down the lower most voxels of the selected color, that have empty voxels below them.
+
+<img src="readme_img/im24.png" width=1000/>
+
+
 ### Gravity Fill 
 
 
