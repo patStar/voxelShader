@@ -167,7 +167,16 @@ This can be usefull in combination with the patina shader or the overgrowth shad
 
 This shader can be used to simulate snowfall or an object made of sand, collapsing.
 It casts down every voxel of the selected color to the either the next voxel of a different color or the ground.
+This shader will cast down all voxels at once. So if you have 5 white voxels stacked and choose the white color, all of them will fall down an build a bile of 5 voxels. If you want to cast down voxels layer by layer, you can use the Gravity Layer shader.
 
 <img src="readme_img/im21.png" width=1000/>
 
+
+### Gravity Fill 
+
+
+Select a color and this shader will fill in all empty voxels below all voxels of the selected color. 
+For example if you draw a stair with only the top voxels, this shader can fill in the supporting voxels below it.
+
+<img src="readme_img/im22.png" width=1000/>
 
