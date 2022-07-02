@@ -190,7 +190,17 @@ For example if you draw a stair with only the top voxels, this shader can fill i
 
 ### Fir Tree
 
-Creates fir trees
+This shader creates objects in the shape of fir trees. There are some parameters to adjust the outcome.
+
+| Parameter | Description |
+| ------ | ------ |
+| Random Seed | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
+| Number of Random Points | This will influence the number of "branches" of the tree. |
+| Bow | This defines how much the branches will bow down. A value of 1 means straight down. Choose a number higher than 1 to curve the branches inward which will create some floating, drop like, objects|
+| Cone | This defines the steepness of the tree. A small value results in a spiky tree while a high value will make it bigger and bigger |
+| Zaggy | This will add and delete some random voxels along the branches making the tree look more bushy|
+| Thickness | This defines the vertical density of the branches. A high value will make the tree look like a full cone. A too low value may result in only one branch or no braches at all |
+
 
 <img src="readme_img/im25.png" width=1000/>
 
