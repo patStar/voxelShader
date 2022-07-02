@@ -188,6 +188,19 @@ For example if you draw a stair with only the top voxels, this shader can fill i
 <img src="readme_img/im23.png" width=1000/>
 
 
+### Stone Shader
+
+This one uses Voronoi to create stone like polygonal shapes.
+
+| Parameter | Description |
+| ------ | ------ |
+| Scale | No magic here ^^. This defines how big the rock will be. When this is to high, the cluster size might no affect anything sinze this defines also kind of the zoom into a scene |
+| Seed | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
+| Cluster | Raising this can either result in mutliple stones or more complex stone shapes as multiple stones are mixed together to create a new one |
+
+<img src="readme_img/im26.png" width=1000/>
+
+
 ### Fir Tree
 
 This shader creates objects in the shape of fir trees. There are some parameters to adjust the outcome.
