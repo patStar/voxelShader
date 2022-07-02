@@ -217,3 +217,17 @@ This shader creates objects in the shape of fir trees. There are some parameters
 
 <img src="readme_img/im25.png" width=1000/>
 
+
+### Vines Shader
+
+This shader will tangle down some vines from some of the already existing voxels of the selected color.
+
+| Parameter | Description |
+| ------ | ------ |
+| Random Seed 1 | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene. |
+| Random Seed 2 | Using the shader on the same scene will always yield the exact same result as long as you don't change this value. Play with this to yield different patterns on the same scene.  |
+| Growth Limit | Defines the number of vines that will be created |
+| Length Limit | Defines the amximum length of the created vines |
+
+<img src="readme_img/im27.png" width=1000/>
+
