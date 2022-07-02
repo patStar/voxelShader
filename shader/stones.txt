@@ -72,7 +72,7 @@ float map(vec3 v)
 		float col = 200*determineClusterValue(modifiedDistanceFromCenter, i_args[1] + try * 2345.234);
 
 		if(floor(1.0+col)== 1. && fract(1.0+col) < 0.5){
-			return 1.0+col;
+			return iColorIndex;
 		}
 		try++;
 	}
