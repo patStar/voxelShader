@@ -155,11 +155,19 @@ Layers can be colored differently using the Additional Colors parameter.
 
 ### Curve Map
 
+
 This parameterless shader simpy highlights all edges and rims on a certain model in the currentyl selected color.
 This can be usefull in combination with the patina shader or the overgrowth shader.
 
 <img src="readme_img/im20.png" width=1000/>
 
 
+### Gravity Falling 
+
+
+This shader can be used to simulate snowfall or an object made of sand, collapsing.
+It casts down every voxel of the selected color to the either the next voxel of a different color or the ground.
+
+<img src="readme_img/im21.png" width=1000/>
 
 
