@@ -1,0 +1,69 @@
+// MIT License (MIT)
+// Copyright (c) 2020 Patrick Seeber
+//
+// xs_begin
+// author : '@rubikow'
+// xs_end
+
+float map(vec3 v) {
+  if (voxel(v) == 0.) {
+	  return 0.;
+  }
+
+  int valid_counter = 0;
+  for (float x = -1.; x <= 1.; x += 1.) {		
+	int voxels_in_plane = 0;
+    for (float y = -1.; y <= 1; y += 1.) {
+      for (float z = -1; z <= 1; z += 1.) {
+        if (voxel(vec3(v.x + x, v.y + y, v.z + z)) > 0.) {
+		  voxels_in_plane += 1;
+        }
+      }
+    }
+	if(voxels_in_plane == 0 || voxels_in_plane == 9){
+		valid_counter += 1;
+	}
+  }
+  if (valid_counter == 3) {
+	return voxel(v);
+  }
+  
+  valid_counter = 0;
+  for (float y = -1.; y <= 1.; y += 1.) {		
+	int voxels_in_plane = 0;
+    for (float x = -1.; x <= 1; x += 1.) {
+      for (float z = -1; z <= 1; z += 1.) {
+        if (voxel(vec3(v.x + x, v.y + y, v.z + z)) > 0.) {
+		  voxels_in_plane += 1;
+        }
+      }
+    }
+	if(voxels_in_plane == 0 || voxels_in_plane == 9){
+		valid_counter += 1;
+	}
+  }
+  if (valid_counter == 3) {
+	return voxel(v);
+  }
+  
+  valid_counter = 0;
+  for (float z = -1.; z <= 1.; z += 1.) {		
+	int voxels_in_plane = 0;
+    for (float x = -1.; x <= 1; x += 1.) {
+      for (float y = -1; y <= 1; y += 1.) {
+        if (voxel(vec3(v.x + x, v.y + y, v.z + z)) > 0.) {
+		  voxels_in_plane += 1;
+        }
+      }
+    }
+	if(voxels_in_plane == 0 || voxels_in_plane == 9){
+		valid_counter += 1;
+	}
+  }
+  if (valid_counter == 3) {
+	return voxel(v);
+  }
+  
+  
+  return iColorIndex;
+}
